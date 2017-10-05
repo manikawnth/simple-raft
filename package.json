@@ -9,6 +9,7 @@
   "author": "Manikanth",
   "license": "MIT",
   "dependencies": {
+    "debug": "^3.1.0",
     "grpc": "^1.6.0"
   }
 }

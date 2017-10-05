@@ -7,7 +7,7 @@ class Transporter {
     console.log("constructing transporter...");
     this._server;
     //load the protofile, Point the 'RPC' service object
-    this._rpcService = grpc.load(protoFile).RPC.service;
+    this._rpcProto = grpc.load(protoFile);
     this._clients = [];
   }
 
@@ -15,13 +15,18 @@ class Transporter {
   bind(options) {
     const self = this;
     self._server = new grpc.Server();
+
+    self._server.addService(self._rpcProto['RPC']['service'], options.rpc);  
+
     self._server.bind(options.bindAddress, grpc.ServerCredentials.createInsecure())
 
     //add each rpc callbacks
+    /*
     for (let rpc_name in options.rpc){
       let rpc_handler = options.rpc[rpc_name];
       self._server.addService(self._rpcService, {rpc_name: rpc_handler});  
     }
+    */
     console.log("transporter starting...");
     //start the grpc server
     self._server.start();
@@ -30,7 +35,7 @@ class Transporter {
     console.log("gathering client idents...");
     for (let peer of config.nodes){
       if (peer != config.me){
-        let client = new rpc_proto.RPC(peer,grpc.credentials.createInsecure());
+        let client = new self._rpcProto['RPC'](peer,grpc.credentials.createInsecure());
         self._clients.push(client);
       }
     }
