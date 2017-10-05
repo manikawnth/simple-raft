@@ -1,0 +1,32 @@
+// The greeting service definition.
+syntax = "proto3";
+
+service RPC {
+  // Sends a greeting
+  rpc RequestVotes (VoteRequest) returns (VoteResponse) {}
+  rpc AppendEntries (AppendRequest) returns (AppendResponse) {}
+}
+
+// The request message containing the user's name.
+message VoteRequest {
+  required int32 term = 1;
+  required string candidateId = 2;
+}
+
+// The response message containing the greetings
+message VoteResponse {
+  required int32 term = 1;
+  required bool voteGranted = 2;
+}
+
+// The request message containing the user's name.
+message AppendRequest {
+  required int32 term = 1;
+  required string leaderId = 2;
+}
+
+// The response message containing the greetings
+message AppendResponse {
+  required int32 term = 1;
+  required bool success = 2;
+}
