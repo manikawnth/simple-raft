@@ -1,24 +1,28 @@
-//Only rule is election timer will not run for Leaders
-let electionTimer;
+const config = require('./config');
+const EventEmitter = require('events').EventEmitter;
+class Election extends EventEmitter{
+  constructor(){
+    super();
+    this._timer;
+  }
 
-function startElection(){
-  //this timer will be cleared if there are regular heartbeats.
-  electionTimer = setInterval(function(){
-    //transition to candidate
-    state.toCandidate();
-  },1000);
+  startElection(){
+    const self = this;
+    self._timer = setInterval(function(){
+      self.emit('election started');
+    }, config.electionTimeout);
+  }
 
-}
+  resetElection(){
+    const self = this;
+    if(self._timer) clearInterval(self._timer);
+  }
 
-function resetElection(){
-  if (electionTimer){
-    clearInterval(electionTimer);
+  restartElection(){
+    const self = this;
+    resetElection.call(self);
+    startElection.call(self);
   }
 }
 
-function restartElection(){
-  resetElection();
-  startElection();
-}
-
-module.exports = {startElection,resetElection,restartElection};
+module.exports = new Election();

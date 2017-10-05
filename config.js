@@ -5,7 +5,9 @@ var config = {
     "localhost:40403"
   ],
   "me" : "localhost:40401",
+  "electionTimeout": 500,
   "grpcOptions":{
+    "protofile" : "rpc.proto",
     "bindAddress" : "0.0.0.0:40401",
     "rpc" : {
       

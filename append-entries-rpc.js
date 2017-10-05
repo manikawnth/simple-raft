@@ -1,6 +1,7 @@
 
 const state = require('./state');
 const config = require('./config');
+const transporter = require('./transporter');
 
 function onAppendEntries(call, cb){
   let appendReq = call.request;
@@ -23,7 +24,8 @@ function onAppendEntries(call, cb){
 }
 
 
-function appendEntries(clientIdents){
+function appendEntries(){
+  let clientIdents = transporter._clients;
   for (let client of clientIdents){
     let req = {term: state.currentTerm, leaderId: config.me};
     let voteCountClosure = 0;

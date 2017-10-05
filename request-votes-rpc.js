@@ -1,6 +1,7 @@
 
 const state = require('./state');
 const config = require('./config');
+const transporter = require('./transporter');
 
 //when other peers request for votes
 //Send a vote response only if you're follower
@@ -26,10 +27,11 @@ function onRequestVotes(call, cb){
 }
 
 //request for votes and process the response
-function requestVotes(clientIdents){
+function requestVotes(){
+  let clientIdents = transporter._clients;
+  let voteCountClosure = 0;
   for (let client of clientIdents){
     let req = {term: state.currentTerm, candidateId: config.me};
-    let voteCountClosure = 0;
 
     client.requestVotes(req, function(err,resp){      
       if(!err){

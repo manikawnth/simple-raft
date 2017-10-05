@@ -1,5 +1,5 @@
 const grpc = require('grpc');
-const config = require('config');
+const config = require('./config');
 
 class Transporter {
   
@@ -39,4 +39,4 @@ class Transporter {
 
 }
 
-module.exports = Transporter;
+module.exports = new Transporter('rpc.proto');
